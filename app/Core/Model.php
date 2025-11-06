@@ -83,6 +83,7 @@ class Model implements DbModelInterface
             $this->sql .= sprintf(
                 " where %s",
                 Util::keyValueToList(Util::quoteStringValues($params), "%s=%s", " and ")
+                Util::keyValueToList($params, "%s=%s")
             );
         }
         return $this;
@@ -171,6 +172,7 @@ class Model implements DbModelInterface
             return $this->getItem($id);
         }
         return null;
+        $db->createEntity($this, $values);
     }
 
     public function deleteItem($id)
@@ -183,5 +185,6 @@ class Model implements DbModelInterface
     {
         $db = new DB();
         return  $db->updateEntity($this, $id, $values);
+        $db->updateEntity($this, $id, $values);
     }
 }

@@ -68,6 +68,25 @@ class DB
 
 
     public function deleteEntity(DbModelInterface $model, int $id)
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param $sql
+     * @param array $parameters
+     */
+    public function exec($sql, $parameters = [])
+    {
+        $dbh = $this->getConnection();
+        $stmt = $dbh->prepare($sql);
+        $result = $stmt->execute($parameters);
+        return $result;
+    }
+
+
+    public function deleteEntity(DbModelInterface $model, int $id)
     {
 
         $dbh = $this->getConnection();
@@ -76,6 +95,23 @@ class DB
             $model->getTableName(),
             $model->getPrimaryKeyName()
         );
+        $statement = $dbh->prepare($sql);
+
+        $statement->execute(array($id));
+    }
+
+    public function updateEntity(DbModelInterface $model, int $id, $values = [])
+    {
+
+        $dbh = $this->getConnection();
+        $sql = sprintf(
+            "DELETE FROM %s WHERE %s = ?",
+            "UPDATE %s SET %s WHERE %s = ?;",
+            $model->getTableName(),
+            Util::arrayToList(array_keys($values), "%s = ?"),
+            $model->getPrimaryKeyName()
+        );
+
         $statement = $dbh->prepare($sql);
 
         return $statement->execute(array($id));
@@ -122,5 +158,6 @@ class DB
             }
         }
         return false;
+        return $statement->execute(array_values($values));
     }
 }

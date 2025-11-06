@@ -75,4 +75,13 @@ class Controller
         $url = $server_host . route::getBP() . $route;
         header("Location: $url");
     }
+     protected function forward($route)
+     {
+         App::run($route);
+     }
+    
+
+     function redirect ($url){
+        header('Location: '.$url);
+     }
 }

@@ -81,6 +81,8 @@ class ProductController extends Controller
             if ($newProduct){
                $this->redirect(sprintf("/product/edit?id=%d", $newProduct["id"]));
             }
+            $model->addItem($values);
+            $this->redirect("/product/list");
         }
         $this->renderLayout();
     }
